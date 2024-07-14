@@ -14,11 +14,13 @@ class MoneyIllusionParser(scrapy.Spider):
             title = article.css("h1 a").get()
             link = article.css("h1 a::attr(href)").get()
             content = article.css("div.entry").get()
+            date = article.css("p.postmetadata::text").get()
             yield {
                 "title": title,
                 "link": link,
-                "content": content
+                "content": content,
+                "date": date
             }
-        next_page = response.css("div.pagenavigation2 div.alignright a::attr(href)")
+        """next_page = response.css("div.pagenavigation2 div.alignright a::attr(href)")
         if next_page:
-            yield response.follow(next_page, self.parse)
+            yield response.follow(next_page, self.parse)"""
