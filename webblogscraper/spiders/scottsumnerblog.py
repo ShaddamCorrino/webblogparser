@@ -7,11 +7,16 @@ from scrapy.http import Response
 class MoneyIllusionParser(scrapy.Spider):
     name = "money_illusion"
     start_urls = ["https://www.themoneyillusion.com/"]
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            "webblogscraper.pipelines.MoneyIllusionPipeline": 300,
+        }
+    }
 
     def parse(self, response: Response, **kwargs: Any) -> Any:
         articles = response.css("div.post")
         for article in articles:
-            title = article.css("h1 a").get()
+            title = article.css("h1 a::text").get()
             link = article.css("h1 a::attr(href)").get()
             content = article.css("div.entry").get()
             date = article.css("p.postmetadata::text").get()
